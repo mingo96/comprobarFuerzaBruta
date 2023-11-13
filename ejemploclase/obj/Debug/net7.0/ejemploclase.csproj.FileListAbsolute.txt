@@ -1,0 +1,14 @@
+C:\Users\eloy\Desktop\clase\PSP\ejemploclase\ejemploclase\bin\Debug\net7.0\ejemploclase.exe
+C:\Users\eloy\Desktop\clase\PSP\ejemploclase\ejemploclase\bin\Debug\net7.0\ejemploclase.deps.json
+C:\Users\eloy\Desktop\clase\PSP\ejemploclase\ejemploclase\bin\Debug\net7.0\ejemploclase.runtimeconfig.json
+C:\Users\eloy\Desktop\clase\PSP\ejemploclase\ejemploclase\bin\Debug\net7.0\ejemploclase.dll
+C:\Users\eloy\Desktop\clase\PSP\ejemploclase\ejemploclase\bin\Debug\net7.0\ejemploclase.pdb
+C:\Users\eloy\Desktop\clase\PSP\ejemploclase\ejemploclase\obj\Debug\net7.0\ejemploclase.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\eloy\Desktop\clase\PSP\ejemploclase\ejemploclase\obj\Debug\net7.0\ejemploclase.AssemblyInfoInputs.cache
+C:\Users\eloy\Desktop\clase\PSP\ejemploclase\ejemploclase\obj\Debug\net7.0\ejemploclase.AssemblyInfo.cs
+C:\Users\eloy\Desktop\clase\PSP\ejemploclase\ejemploclase\obj\Debug\net7.0\ejemploclase.csproj.CoreCompileInputs.cache
+C:\Users\eloy\Desktop\clase\PSP\ejemploclase\ejemploclase\obj\Debug\net7.0\ejemploclase.dll
+C:\Users\eloy\Desktop\clase\PSP\ejemploclase\ejemploclase\obj\Debug\net7.0\refint\ejemploclase.dll
+C:\Users\eloy\Desktop\clase\PSP\ejemploclase\ejemploclase\obj\Debug\net7.0\ejemploclase.pdb
+C:\Users\eloy\Desktop\clase\PSP\ejemploclase\ejemploclase\obj\Debug\net7.0\ejemploclase.genruntimeconfig.cache
+C:\Users\eloy\Desktop\clase\PSP\ejemploclase\ejemploclase\obj\Debug\net7.0\ref\ejemploclase.dll
