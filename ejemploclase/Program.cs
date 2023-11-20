@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 class pruebas
 {
 
-    private static bool Encontrado = false;
-    private static String Palabra = "";
+    private static bool Found = false;
+    private static String Word = "";
     
     static void Main()
     {
@@ -25,23 +25,23 @@ class pruebas
         
         var ThreadsNumber = Convert.ToInt32( Console.ReadLine());
 
-        var hilos = new List<Thread>();
+        var threads = new List<Thread>();
 
 
         for (int Number = 0; Number < ThreadsNumber; Number++)
         {
-            var fraccion = lines.Length/ThreadsNumber;
-            var start = fraccion*Number;
-            var end = fraccion* (Number + 1) ;
+            var fraction = lines.Length/ThreadsNumber;
+            var start = fraction*Number;
+            var end = fraction* (Number + 1) ;
             
             var section = lines[new Range(start,end)];
 
-            hilos.Add(new Thread(()=>
+            threads.Add(new Thread(()=>
                         {
                             Console.WriteLine("nuevo hilo");
-                            var encontradoEnEsta = BuscarSha256(section, hash);
-                            if(encontradoEnEsta) Encontrado = true;
-                            Console.WriteLine(!encontradoEnEsta? "no encontrado de entrada " + start +" a entrada "+ end : "encontrado de entrada " + start +" a entrada "+ end);
+                            var foundInThisThread = SearchForSha256(section, hash);
+                            if(foundInThisThread) Found = true;
+                            Console.WriteLine(!foundInThisThread? "no encontrado de entrada " + start +" a entrada "+ end : "encontrado de entrada " + start +" a entrada "+ end);
                         }
                     )
             );
@@ -49,22 +49,22 @@ class pruebas
         
         
         var StartMoment = DateTime.Now;
-        var todosTerminados = false;
-        foreach (var hilo in hilos)
+        var everyThreadIsDone = false;
+        foreach (var hilo in threads)
         {
             hilo.Start();
         }
-        while (!todosTerminados)
+        while (!everyThreadIsDone)
         {
-            todosTerminados = true;
-            foreach (var hilo in hilos)
+            everyThreadIsDone = true;
+            foreach (var thread in threads)
             {
-                if (hilo.IsAlive)
+                if (thread.IsAlive)
                 {
-                    todosTerminados = false;
+                    everyThreadIsDone = false;
                 }
             }
-            if (Encontrado)
+            if (Found)
             {
                 break;
             }
@@ -72,7 +72,7 @@ class pruebas
 
         Console.WriteLine("hemos tardado " + (DateTime.Now - StartMoment));
         
-        Console.WriteLine("el hash coincide con el de la combinacion " + Palabra);
+        Console.WriteLine("el hash coincide con el de la combinacion " + Word);
 
         Console.WriteLine("Presione cualquier tecla para salir.");
         System.Console.ReadKey();
@@ -81,18 +81,18 @@ class pruebas
 
 
 
-    static bool BuscarSha256(string[] lines, string obj)
+    static bool SearchForSha256(string[] lines, string obj)
     {
         foreach (var line in lines)
         {
-            var encriptado = Encriptar(line);
-            if (encriptado == obj)
+            var encrypted = Encrypt(line);
+            if (encrypted == obj)
             {
-                Palabra = line;
+                Word = line;
                 return true;
             }
 
-            if (Encontrado)
+            if (Found)
             {
                 break;
             }
@@ -101,18 +101,18 @@ class pruebas
         return false;
     }
 
-    static string Encriptar(string cadena)
+    static string Encrypt(string originalString)
     {
-        var resultado = string.Empty;
+        var result = string.Empty;
         var convert = SHA256.Create();
 
-        var hashValue = convert.ComputeHash(Encoding.UTF8.GetBytes(cadena));
+        var hashValue = convert.ComputeHash(Encoding.UTF8.GetBytes(originalString));
         foreach (byte b in hashValue)
         {
-            resultado += $"{b:X2}";
+            result += $"{b:X2}";
         }
 
-        return resultado;
+        return result;
     }
 
 }
