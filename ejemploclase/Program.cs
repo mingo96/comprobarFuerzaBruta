@@ -23,16 +23,16 @@ class pruebas
 
         Console.WriteLine("en cuantos hilos lo quieres dividir");
         
-        var ThreadsNumber = Convert.ToInt32( Console.ReadLine());
+        var threadsNumber = Convert.ToInt32( Console.ReadLine());
 
         var threads = new List<Thread>();
 
 
-        for (int Number = 0; Number < ThreadsNumber; Number++)
+        for (int number = 0; number < threadsNumber; number++)
         {
-            var fraction = lines.Length/ThreadsNumber;
-            var start = fraction*Number;
-            var end = fraction* (Number + 1) ;
+            var fraction = lines.Length/threadsNumber;
+            var start = fraction*number;
+            var end = fraction* (number + 1) ;
             
             var section = lines[new Range(start,end)];
 
@@ -48,7 +48,7 @@ class pruebas
         }
         
         
-        var StartMoment = DateTime.Now;
+        var startMoment = DateTime.Now;
         var everyThreadIsDone = false;
         foreach (var hilo in threads)
         {
@@ -70,7 +70,7 @@ class pruebas
             }
         }
 
-        Console.WriteLine("hemos tardado " + (DateTime.Now - StartMoment));
+        Console.WriteLine("hemos tardado " + (DateTime.Now - startMoment));
         
         Console.WriteLine("el hash coincide con el de la combinacion " + Word);
 
