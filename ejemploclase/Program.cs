@@ -1,21 +1,19 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using System.Security.Cryptography;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
-class pruebas
+class Pruebas
 {
 
-    private static bool Found = false;
-    private static String Word = "";
+    private static bool _found;
+    
+    private static string _word = "";
+    
+    private static readonly SHA256 ShaConvert = SHA256.Create();
     
     static void Main()
     {
-        var lines = System.IO.File.ReadAllLines(@"C:\users\eloy\downloads\2151220-passwords.txt");
+        var lines = File.ReadAllLines(@"C:\users\eloy\downloads\2151220-passwords.txt");
 
         Console.WriteLine("introduce tu hash a comparar");
 
@@ -27,12 +25,12 @@ class pruebas
 
         var threads = new List<Thread>();
 
+        var fractionOfLines = lines.Length/threadsNumber;
 
-        for (int number = 0; number < threadsNumber; number++)
+        for (var number = 0; number < threadsNumber; number++)
         {
-            var fraction = lines.Length/threadsNumber;
-            var start = fraction*number;
-            var end = fraction* (number + 1) ;
+            var start = fractionOfLines*number;
+            var end = fractionOfLines* (number + 1) ;
             
             var section = lines[new Range(start,end)];
 
@@ -40,7 +38,7 @@ class pruebas
                         {
                             Console.WriteLine("nuevo hilo");
                             var foundInThisThread = SearchForSha256(section, hash);
-                            if(foundInThisThread) Found = true;
+                            if(foundInThisThread) _found = true;
                             Console.WriteLine(!foundInThisThread? "no encontrado de entrada " + start +" a entrada "+ end : "encontrado de entrada " + start +" a entrada "+ end);
                         }
                     )
@@ -50,11 +48,13 @@ class pruebas
         
         var startMoment = DateTime.Now;
         var everyThreadIsDone = false;
-        foreach (var hilo in threads)
+        
+        foreach (var thread in threads)
         {
-            hilo.Start();
+            thread.Start();
         }
-        while (!everyThreadIsDone)
+        
+        while (!everyThreadIsDone || !_found)
         {
             everyThreadIsDone = true;
             foreach (var thread in threads)
@@ -63,36 +63,34 @@ class pruebas
                 {
                     everyThreadIsDone = false;
                 }
+                
             }
-            if (Found)
-            {
-                break;
-            }
+            
         }
 
         Console.WriteLine("hemos tardado " + (DateTime.Now - startMoment));
         
-        Console.WriteLine("el hash coincide con el de la combinacion " + Word);
+        Console.WriteLine("el hash coincide con el de la combinacion " + _word);
 
         Console.WriteLine("Presione cualquier tecla para salir.");
-        System.Console.ReadKey();
+        Console.ReadKey();
         
     }
 
 
 
-    static bool SearchForSha256(string[] lines, string obj)
+    private static bool SearchForSha256(string[] lines, string? obj)
     {
         foreach (var line in lines)
         {
             var encrypted = Encrypt(line);
             if (encrypted == obj)
             {
-                Word = line;
+                _word = line;
                 return true;
             }
 
-            if (Found)
+            if (_found)
             {
                 break;
             }
@@ -101,12 +99,11 @@ class pruebas
         return false;
     }
 
-    static string Encrypt(string originalString)
+    private static string Encrypt(string originalString)
     {
         var result = string.Empty;
-        var convert = SHA256.Create();
 
-        var hashValue = convert.ComputeHash(Encoding.UTF8.GetBytes(originalString));
+        var hashValue = ShaConvert.ComputeHash(Encoding.UTF8.GetBytes(originalString));
         foreach (byte b in hashValue)
         {
             result += $"{b:X2}";
