@@ -9,6 +9,8 @@ class Pruebas
     
     private static string _word = "";
     
+    private static SHA256 ShaConvert = SHA256.Create();
+    
     static void Main()
     {
         var lines = File.ReadAllLines(@"2151220-passwords.txt");
@@ -38,6 +40,7 @@ class Pruebas
                             var foundInThisThread = SearchForSha256(section, hash);
                             if(foundInThisThread) _found = true;
                             Console.WriteLine(!foundInThisThread? "no encontrado de entrada " + start +" a entrada "+ end : "encontrado de entrada " + start +" a entrada "+ end);
+                            
                         }
                     )
             );
@@ -69,7 +72,8 @@ class Pruebas
         
         Console.WriteLine("el hash coincide con el de la combinacion " + _word);
 
-        Console.WriteLine("Presione cualquier tecla para salir.");
+        Console.WriteLine("Presione cualquier tecla para salir.");  
+        
         Console.ReadKey();
         
     }
@@ -100,14 +104,17 @@ class Pruebas
     {
         var result = string.Empty;
         
-        //hay que crear uno por ejecucion, si no, da fallo por acceso multiple
-        SHA256 ShaConvert = SHA256.Create();
-        
-        var hashValue = ShaConvert.ComputeHash(Encoding.UTF8.GetBytes(originalString));
-        foreach (byte b in hashValue)
+        //hay que bloquear el conversor, si no, da fallo por acceso multiple
+        lock (ShaConvert)
         {
-            result += $"{b:X2}";
+            var hashValue = ShaConvert.ComputeHash(Encoding.UTF8.GetBytes(originalString));
+                    foreach (byte b in hashValue)
+                    {
+                        result += $"{b:X2}";
+                    }
         }
+        
+        
 
         return result;
     }
