@@ -9,15 +9,13 @@ class Pruebas
     
     private static string _word = "";
     
-    private static readonly SHA256 ShaConvert = SHA256.Create();
-    
     static void Main()
     {
-        var lines = File.ReadAllLines(@"C:\users\eloy\downloads\2151220-passwords.txt");
+        var lines = File.ReadAllLines(@"2151220-passwords.txt");
 
         Console.WriteLine("introduce tu hash a comparar");
 
-        var hash = Console.ReadLine();
+        var hash = Console.ReadLine()!.ToUpper();
 
         Console.WriteLine("en cuantos hilos lo quieres dividir");
         
@@ -44,7 +42,6 @@ class Pruebas
                     )
             );
         }
-        
         
         var startMoment = DateTime.Now;
         var everyThreadIsDone = false;
@@ -102,7 +99,10 @@ class Pruebas
     private static string Encrypt(string originalString)
     {
         var result = string.Empty;
-
+        
+        //hay que crear uno por ejecucion, si no, da fallo por acceso multiple
+        SHA256 ShaConvert = SHA256.Create();
+        
         var hashValue = ShaConvert.ComputeHash(Encoding.UTF8.GetBytes(originalString));
         foreach (byte b in hashValue)
         {
